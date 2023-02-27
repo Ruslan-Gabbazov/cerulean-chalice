@@ -1,15 +1,18 @@
 import typing
 import logging
 import aiohttp.web as web
+
 from app.store.store import Store
+from app.database.accessor import Database
 from app.chat.routes import setup_routes
+from app.settings import config
 
 
 class Application(web.Application):
-    database: dict = {'users': [],
-                      'messages': []}  # ?
     store: "Store"
+    database: typing.Optional[Database] = None
     logger: typing.Optional[logging.Logger] = None
+    config: dict = config
 
 
 class Request(web.Request):
@@ -37,6 +40,9 @@ def setup_app():
 
     logging.basicConfig(level=logging.INFO)
     app.logger = logging.getLogger()
+
+    app.database = Database(app)
+    app.database.setup_db(app)
 
     app.store = Store(app)
     setup_routes(app)

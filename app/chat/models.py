@@ -3,9 +3,9 @@ from dataclasses import dataclass
 
 @dataclass
 class User:
-    user_id: int  # from db ?
     nickname: str
     password: str
+    user_id: int or None = None  # -> autoincrement in db
 
 
 @dataclass
@@ -16,7 +16,7 @@ class Event:
 
 @dataclass
 class Message:
-    message_id: int  # from db ?
-    user_id: int
     content: str
     datetime: str
+    message_id: int or None = None  # -> autoincrement in db
+    user_id: int or None = None

@@ -1,0 +1,5 @@
+common:
+  port: 8080
+postgres:
+  database_url: postgresql+asyncpg://rest:password@localhost/chat
+  require_ssl: false

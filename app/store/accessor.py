@@ -11,4 +11,5 @@ class BaseAccessor:
     def __init__(self, store: 'Store'):
         self.app = store.app
         self.store = store
+        self.database = store.app.database
         self.logger = store.app.logger.getChild(self.Meta.name)
