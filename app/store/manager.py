@@ -3,7 +3,7 @@ from datetime import datetime
 from dataclasses import asdict
 
 from app.chat.models import User, Event, Message
-from app.database.accessor import DBAccessor
+from app.database.db_accessor import DBAccessor
 from app.store.accessor import BaseAccessor
 from app.store.events import ClientEventKind, ServerEventKind
 
@@ -112,7 +112,11 @@ class Manager(BaseAccessor):
         self.logger.info(f'Ping connection: {connection_id}')
 
     async def on_disconnect(self, connection_id: str):
-        self._current_users.pop(connection_id)
+        try:
+            self._current_users.pop(connection_id)
+        except KeyError:
+            pass
+
         await self.store.ws.push_all(
             event=Event(
                 kind=ServerEventKind.REMOVE,

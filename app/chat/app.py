@@ -3,7 +3,7 @@ import logging
 import aiohttp.web as web
 
 from app.store.store import Store
-from app.database.accessor import Database
+from app.database.db_accessor import Database
 from app.chat.routes import setup_routes
 from app.settings import config
 

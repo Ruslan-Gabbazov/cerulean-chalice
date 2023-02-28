@@ -40,19 +40,25 @@ class WSAccessor(BaseAccessor):
         return response
 
     async def read(self, connection_id: str):
-        async for message in self._connections[connection_id]:
+        async for connection in self._connections[connection_id]:
             self._timeout_refresh(connection_id)
-            raw_event = json.loads(message.data)
+            raw_event = json.loads(connection.data)
             await self.store.manager.handle_event(
                 event=Event(
                     kind=raw_event['kind'],
-                    payload=raw_event['payload'],)
-                )
+                    payload=raw_event['payload'],
+                ))
 
     async def close(self, connection_id: str):
-        connection = self._connections.pop(connection_id)
-        await self.store.manager.on_disconnect()
-        await connection.close()
+        try:
+            connection = self._connections.pop(connection_id)
+            await self.store.manager.on_disconnect(connection_id)
+            await connection.close()
+        except KeyError:
+            return None
+
+        await self.store.manager.handle_close(connection_id)
+        return None
 
     async def push(self, connection_id: str, event: Event):
         json_data = json.dumps(asdict(event))
@@ -63,8 +69,18 @@ class WSAccessor(BaseAccessor):
         ops = [self._push(connection_id, json_data) for connection_id in self._connections.keys()]
         await asyncio.gather(*ops, return_exceptions=True)
 
+        for op in ops:
+            if isinstance(op, Exception):
+                self.logger.warning()
+
     async def _push(self, connection_id: str, data: str):
-        await self._connections[connection_id].send_str(data)
+        try:
+            await self._connections[connection_id].send_str(data)
+        except KeyError:
+            raise WSConnectionNotFound
+        except ConnectionResetError:
+            self._connections.pop(connection_id)
+            raise
 
     def _timeout_refresh(self, connection_id: str):
         self.logger.info(f'Refresh timeout of connection: {connection_id}')
@@ -80,3 +96,7 @@ class WSAccessor(BaseAccessor):
         self.logger.info(f'Timeout of connection: {connection_id}')
         await self.store.manager.handle_close(connection_id)
         await self.store.ws.close(connection_id)
+
+
+class WSConnectionNotFound(Exception):
+    pass

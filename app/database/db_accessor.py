@@ -79,7 +79,6 @@ class DBAccessor(BaseAccessor):
             query = select(Messages).order_by(Messages.datetime)
             result = await session.execute(query)
             db_messages = result.scalars().all()
-            session.commit()
 
         all_messages = [Message(message_id=r.message_id,
                                 user_id=r.user_id,
