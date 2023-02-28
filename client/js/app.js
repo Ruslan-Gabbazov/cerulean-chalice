@@ -14,15 +14,13 @@ onMessage = (msg) => {
     const payload = event['payload'];
     console.log(`New event with kind ${kind} and payload ${JSON.stringify(payload)}`);
     if (kind === INITIAL) {
-        onOpen();
         onConnected(payload);
         startPing(10000);
     } else if (kind === AUTHORIZE) {
         onAuthorize(payload);
     } else if (kind === SEND) {
         let messages = onSend(payload);
-        // showMessages(messages)
-        chat_init(messages);
+        showMessages(messages)
     } else if (kind === REMOVE) {
         onClose(payload);
     } else {
@@ -35,14 +33,27 @@ onConnected = (payload) => {
     connection_id = payload['connection_id'];
 }
 
+
 onAuthorize = (payload) => {
     connection_id = payload['connection_id'];
-    let allowed = payload['allowed'];
+    allowed = payload['allowed'];
 
     if (allowed) {
-        // показать чат
-        document.location.href = "../templates/chat.html"
+        Authorized(payload)
     }
+}
+
+
+Authorized = (payload) => {
+    connection_id = payload['connection_id'];
+    allowed = payload['allowed'];
+
+    connection.push(
+        AUTHORIZED_EVENT, {
+            connection_id: connection_id,
+            allowed: allowed
+        }
+    )
 }
 
 
@@ -51,13 +62,6 @@ onSend = (payload) => {
     // showMessages(messages);
     return payload['messages']
 }
-
-
-// onRemove = (payload) => {
-//     connection_id = payload['connection_id'];
-//
-//     // закрыть соединение
-// }
 
 
 onOpen = () => {

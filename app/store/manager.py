@@ -30,6 +30,8 @@ class Manager(BaseAccessor):
                 await self.on_signup(connection_id, event.payload)
             case ClientEventKind.SIGNIN_EVENT:
                 await self.on_signin(connection_id, event.payload)
+            case ClientEventKind.AUTHORIZED_EVENT:
+                await self.on_authorized(connection_id, event.payload)
             case ClientEventKind.MESSAGE_EVENT:
                 await self.on_message(connection_id, event.payload)
             case ClientEventKind.DISCONNECT_EVENT:
@@ -61,8 +63,8 @@ class Manager(BaseAccessor):
         self._current_users[connection_id] = user
 
         await self._authorize(connection_id, True)
-        all_messages = await self.db_accessor.get_all_messages()
-        await self.send_all(connection_id, all_messages)
+        # all_messages = await self.db_accessor.get_all_messages()
+        # await self.send_all(connection_id, all_messages)
 
     async def on_signin(self, connection_id: str, payload: dict):
         user = User(nickname=payload['nickname'],
@@ -74,8 +76,8 @@ class Manager(BaseAccessor):
         if allowed:
             user.user_id = user_id
             self._current_users[connection_id] = user
-            all_messages = await self.db_accessor.get_all_messages()
-            await self.send_all(connection_id, all_messages)
+            # all_messages = await self.db_accessor.get_all_messages()
+            # await self.send_all(connection_id, all_messages)
 
     async def _authorize(self, connection_id: str, allowed: bool):
         self.logger.info(f'Authorization of connection: {connection_id} - {allowed=}')
@@ -86,6 +88,13 @@ class Manager(BaseAccessor):
                 payload={'connection_id': connection_id,
                          'allowed': allowed})
         )
+
+    async def on_authorized(self, connection_id: str, payload: dict):
+        allowed = payload['allowed']
+
+        if allowed:
+            all_messages = await self.db_accessor.get_all_messages()
+            await self.send_all(connection_id, all_messages)
 
     async def on_message(self, connection_id, payload: dict):
         self.logger.info(f'Receive message from connection: {connection_id}')

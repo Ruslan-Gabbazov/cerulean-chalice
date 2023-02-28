@@ -1,0 +1,13 @@
+.form form {
+    width: 300px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.block {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: 300ms;
+}

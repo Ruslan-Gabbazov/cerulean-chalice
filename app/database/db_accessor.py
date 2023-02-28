@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import select
 
@@ -17,7 +17,7 @@ class Database:
         self.app = app
         self.engine: Optional[AsyncEngine] = None
         self._db: Optional[declarative_base] = None
-        self.session: Optional[AsyncSession] = None
+        self.session: Optional[async_sessionmaker] = None
 
     def setup_db(self, app: 'Application') -> None:
         app.on_startup.append(self._on_connect)
@@ -47,7 +47,7 @@ class DBAccessor(BaseAccessor):
         self.logger.info(f'Added new user with id {db_user.user_id} to database')
         return db_user.user_id
 
-    async def add_message(self, message: Message):
+    async def add_message(self, message: Message) -> int:
         async_session = async_sessionmaker(self.database.engine, expire_on_commit=False)
 
         async with async_session() as session:

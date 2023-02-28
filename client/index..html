@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Cerulean Chalice: Authorization</title>
+    <title>Cerulean Chalice</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="form">
+<div class="form" onsubmit="return false;">
     <form class="form-horizontal" role="form" method="POST">
         <div class="form-group">
             <div class="form-group">
@@ -44,11 +44,22 @@
     </form>
 </div>
 
-<script type="application/javascript" src="../js/global.js"></script>
-<script type="application/javascript" src="../js/network.js"></script>
-<script type="application/javascript" src="../js/app.js"></script>
-<!--<script type="application/javascript" src="../js/chat.js"></script>-->
-<script type="application/javascript" src="../js/index.js"></script>
+<div>
+    <div></div>
+    <div id="message_container" style="border: 2px solid black"></div>
+
+    <div>
+        <label>
+            <input type="text" name="message_input">
+        </label>
+        <input type="button" name="send_message_button" value="Отправить">
+    </div>
+</div>
+
+<script type="application/javascript" src="./js/global.js"></script>
+<script type="application/javascript" src="./js/network.js"></script>
+<script type="application/javascript" src="./js/app.js"></script>
+<script type="application/javascript" src="./js/index.js"></script>
 
 </body>
 </html>
