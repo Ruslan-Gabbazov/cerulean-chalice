@@ -1,25 +1,17 @@
 # cerulean-chalice
 
----  
 Веб-чат на WebSocket
 
 ## Стек
 
----
-<img src="https://img.shields.io/badge/Python-8F8FA6?style=for-the-badge&logo=Python&logoColor=#3776AB"/>
-<img src="https://img.shields.io/badge/aiohttp-8F8FA6?style=for-the-badge&logo=aiohttp&logoColor=2C5BB4"/>
-<img src="https://img.shields.io/badge/PostgreSQL-8F8FA6?style=for-the-badge&logo=PostgreSQL&logoColor=4169E1"/>
-<img src="https://img.shields.io/badge/Alchemy-8F8FA6?style=for-the-badge&logo=Alchemy&logoColor=0C0C0E"/>
+<img src="https://img.shields.io/badge/Python-8F8FA6?style=for-the-badge&logo=Python&logoColor=#3776AB"/> <img src="https://img.shields.io/badge/aiohttp-8F8FA6?style=for-the-badge&logo=aiohttp&logoColor=2C5BB4"/> <img src="https://img.shields.io/badge/PostgreSQL-8F8FA6?style=for-the-badge&logo=PostgreSQL&logoColor=4169E1"/> <img src="https://img.shields.io/badge/Alchemy-8F8FA6?style=for-the-badge&logo=Alchemy&logoColor=0C0C0E"/>
 
 ####
 
-<img src="https://img.shields.io/badge/HTML5-8F8FA6?style=for-the-badge&logo=HTML5&logoColor=E34F26"/>  
-<img src="https://img.shields.io/badge/CSS3-8F8FA6?style=for-the-badge&logo=CSS3&logoColor=1572B6"/>  
-<img src="https://img.shields.io/badge/JavaScript-8F8FA6?style=for-the-badge&logo=JavaScript&logoColor=F7DF1E"/>
+<img src="https://img.shields.io/badge/HTML5-8F8FA6?style=for-the-badge&logo=HTML5&logoColor=E34F26"/> <img src="https://img.shields.io/badge/CSS3-8F8FA6?style=for-the-badge&logo=CSS3&logoColor=1572B6"/> <img src="https://img.shields.io/badge/JavaScript-8F8FA6?style=for-the-badge&logo=JavaScript&logoColor=F7DF1E"/>
 
 ## Сервер
 
----
 #### Создание docker-образа для postgres базы данных:
 ````
 sudo docker volume create postgres-data
@@ -52,13 +44,11 @@ python3 main.py
 
 ## Клиент
 
----
 Достаточно открыть файл ```./client/index.html```  
 Подключение клиента к серверу происходит через: ```http://127.0.0.1:8080/connect```
 
 ## Взаимодействие
 
----
 #### Общение сервера с клиентом происходит в следующем формате:
 ````
 {
