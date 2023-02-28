@@ -4,7 +4,7 @@
 
 ## Стек
 
-<img src="https://img.shields.io/badge/Python-8F8FA6?style=for-the-badge&logo=Python&logoColor=#3776AB"/> <img src="https://img.shields.io/badge/aiohttp-8F8FA6?style=for-the-badge&logo=aiohttp&logoColor=2C5BB4"/> <img src="https://img.shields.io/badge/PostgreSQL-8F8FA6?style=for-the-badge&logo=PostgreSQL&logoColor=4169E1"/> <img src="https://img.shields.io/badge/Alchemy-8F8FA6?style=for-the-badge&logo=Alchemy&logoColor=0C0C0E"/>
+<img src="https://img.shields.io/badge/Python-8F8FA6?style=for-the-badge&logo=Python&logoColor=#3776AB"/> <img src="https://img.shields.io/badge/aiohttp-8F8FA6?style=for-the-badge&logo=aiohttp&logoColor=2C5BB4"/> <img src="https://img.shields.io/badge/PostgreSQL-8F8FA6?style=for-the-badge&logo=PostgreSQL&logoColor=4169E1"/>  <img src="https://img.shields.io/badge/Docker-8F8FA6?style=for-the-badge&logo=Docker&logoColor=2496ED"/> <img src="https://img.shields.io/badge/SQLAlchemy-8F8FA6?style=for-the-badge&logo=SQLAlchemy&logoColor=0C0C0E"/> <img src="https://img.shields.io/badge/Alembic-8F8FA6?style=for-the-badge&logo=Alembic&logoColor=0C0C0E"/>
 
 ####
 
@@ -58,7 +58,8 @@ python3 main.py
         "nickname": "",
         "password": "",
         "allowed": "",
-        "content": ""
+        "messages": [ 
+        ]
     }
 }
 ````
