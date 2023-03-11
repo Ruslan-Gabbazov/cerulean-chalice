@@ -32,10 +32,10 @@ class WSAccessor(BaseAccessor):
         connection_id = str(uuid.uuid4())
         self._connections[connection_id] = response
 
-        self._timeout_refresh(connection_id)
         await self.store.manager.handle_open(connection_id)
+        self._timeout_refresh(connection_id)
         await self.read(connection_id)
-        await self.close(connection_id)
+        # await self.close(connection_id)
 
         return response
 
@@ -52,7 +52,6 @@ class WSAccessor(BaseAccessor):
     async def close(self, connection_id: str):
         try:
             connection = self._connections.pop(connection_id)
-            await self.store.manager.on_disconnect(connection_id)
             await connection.close()
         except KeyError:
             return None

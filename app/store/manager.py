@@ -63,8 +63,6 @@ class Manager(BaseAccessor):
         self._current_users[connection_id] = user
 
         await self._authorize(connection_id, True)
-        # all_messages = await self.db_accessor.get_all_messages()
-        # await self.send_all(connection_id, all_messages)
 
     async def on_signin(self, connection_id: str, payload: dict):
         user = User(nickname=payload['nickname'],
@@ -76,8 +74,6 @@ class Manager(BaseAccessor):
         if allowed:
             user.user_id = user_id
             self._current_users[connection_id] = user
-            # all_messages = await self.db_accessor.get_all_messages()
-            # await self.send_all(connection_id, all_messages)
 
     async def _authorize(self, connection_id: str, allowed: bool):
         self.logger.info(f'Authorization of connection: {connection_id} - {allowed=}')
@@ -94,7 +90,7 @@ class Manager(BaseAccessor):
 
         if allowed:
             all_messages = await self.db_accessor.get_all_messages()
-            await self.send_all(connection_id, all_messages)
+            await self.send_to(connection_id, all_messages)
 
     async def on_message(self, connection_id, payload: dict):
         self.logger.info(f'Receive message from connection: {connection_id}')
@@ -109,8 +105,18 @@ class Manager(BaseAccessor):
         await self.send_all(connection_id, [message])
 
     async def send_all(self, connection_id: str, messages: list[Message]):
-        self.logger.info(f'Close connection: {connection_id}')
+        self.logger.info(f'Send all messages to all from connection: {connection_id}')
         await self.store.ws.push_all(
+            event=Event(
+                kind=ServerEventKind.SEND,
+                payload={'connection_id': connection_id,
+                         'messages': [asdict(message) for message in messages if message]})
+        )
+
+    async def send_to(self, connection_id: str, messages: list[Message]):
+        self.logger.info(f'Send all messages to connection: {connection_id}')
+        await self.store.ws.push(
+            connection_id=connection_id,
             event=Event(
                 kind=ServerEventKind.SEND,
                 payload={'connection_id': connection_id,
